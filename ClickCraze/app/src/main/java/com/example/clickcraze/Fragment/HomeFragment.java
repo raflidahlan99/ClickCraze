@@ -13,8 +13,12 @@ import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ProgressBar;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.example.clickcraze.API.ApiService;
 import com.example.clickcraze.API.ProductResponse;
 import com.example.clickcraze.API.RetrofitClient;
@@ -36,7 +40,12 @@ public class HomeFragment extends Fragment {
     RecyclerView recyclerView;
     ApiService apiService;
     private ProductAdapter productAdapter;
-    ProgressBar pbHome;
+    LottieAnimationView loading;
+    LinearLayout llNoInt;
+    TextView tvNoInt;
+    ImageView ivNoInt;
+    Button btnNoInt;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -49,17 +58,34 @@ public class HomeFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         apiService = RetrofitClient.getClient().create(ApiService.class);
         recyclerView = view.findViewById(R.id.rv_product);
-        pbHome = view.findViewById(R.id.pbHome);
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
+        loading = view.findViewById(R.id.loadinghome);
+        llNoInt = view.findViewById(R.id.llNoIntHome);
+        tvNoInt = view.findViewById(R.id.tvNoIntHome);
+        ivNoInt = view.findViewById(R.id.ivNoIntHome);
+        btnNoInt = view.findViewById(R.id.btnNoIntHome);
+
+        btnNoInt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                loading.setVisibility(View.VISIBLE);
+                llNoInt.setVisibility(View.GONE);
+                loadData();
+            }
+        });
 
         productAdapter = new ProductAdapter(getContext(), new ArrayList<>());
         recyclerView.setAdapter(productAdapter);
 
+        loading.setVisibility(View.VISIBLE);
         loadData();
     }
 
     private void loadData(){
-        pbHome.setVisibility(View.VISIBLE);
+
+        // Tampilkan loading indicator sebelum melakukan pemanggilan API
+        loading.setVisibility(View.VISIBLE);
+        recyclerView.setVisibility(View.GONE); // Sembunyikan RecyclerView sementara
 
         ExecutorService executor = Executors.newSingleThreadExecutor();
         Handler handler = new Handler(Looper.getMainLooper());
@@ -74,11 +100,15 @@ public class HomeFragment extends Fragment {
                         handler.post(new Runnable() {
                             @Override
                             public void run() {
-                                pbHome.setVisibility(View.GONE);
+                                // Sembunyikan loading indicator setelah pemanggilan API selesai
+                                loading.setVisibility(View.GONE);
+                                recyclerView.setVisibility(View.VISIBLE); // Tampilkan kembali RecyclerView
 
                                 if (response.isSuccessful() && response.body() != null) {
                                     List<Product> products = response.body().getProducts();
                                     productAdapter.addProducts(products);
+                                } else {
+                                    llNoInt.setVisibility(View.VISIBLE);
                                 }
                             }
                         });
@@ -89,7 +119,9 @@ public class HomeFragment extends Fragment {
                         handler.post(new Runnable() {
                             @Override
                             public void run() {
-                                pbHome.setVisibility(View.GONE);
+                                // Sembunyikan loading indicator jika terjadi kesalahan saat pemanggilan API
+                                llNoInt.setVisibility(View.VISIBLE);
+                                loading.setVisibility(View.GONE);
                             }
                         });
                     }

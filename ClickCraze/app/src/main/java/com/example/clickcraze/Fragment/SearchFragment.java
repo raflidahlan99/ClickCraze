@@ -13,8 +13,13 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.example.clickcraze.API.ApiService;
 import com.example.clickcraze.API.ProductResponse;
 import com.example.clickcraze.API.RetrofitClient;
@@ -37,6 +42,12 @@ public class SearchFragment extends Fragment {
     private SearchAdapter searchAdapter;
     private ApiService apiService;
     private List<Product> allProducts = new ArrayList<>();
+    private TextView tvNoResults;
+    LottieAnimationView loading;
+    LinearLayout llNoInt;
+    TextView tvNoInt;
+    ImageView ivNoInt;
+    Button btnNoInt;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -54,13 +65,28 @@ public class SearchFragment extends Fragment {
         // Initialize UI components
         recyclerView = view.findViewById(R.id.rv_search);
         searchView = view.findViewById(R.id.search_product);
-        progressBar = view.findViewById(R.id.pbSearch);
+        loading = view.findViewById(R.id.loadingsearch);
+        llNoInt = view.findViewById(R.id.llNoIntSearch);
+        tvNoInt = view.findViewById(R.id.tvNoIntSearch);
+        ivNoInt = view.findViewById(R.id.ivNoIntSearch);
+        tvNoResults = view.findViewById(R.id.tvNoResults);
+        btnNoInt = view.findViewById(R.id.btnNoIntSearch);
 
         // Set up RecyclerView
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         searchAdapter = new SearchAdapter(getContext(), new ArrayList<>());
         recyclerView.setAdapter(searchAdapter);
 
+        loading.setVisibility(View.VISIBLE);
+
+        btnNoInt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                loading.setVisibility(View.VISIBLE);
+                llNoInt.setVisibility(View.GONE);
+                loadAllProducts();
+            }
+        });
         // Load all products from API
         loadAllProducts();
 
@@ -81,25 +107,31 @@ public class SearchFragment extends Fragment {
     }
 
     private void loadAllProducts() {
-        progressBar.setVisibility(View.VISIBLE);
         Call<ProductResponse> call = apiService.getProducts();
         call.enqueue(new Callback<ProductResponse>() {
             @Override
             public void onResponse(Call<ProductResponse> call, Response<ProductResponse> response) {
-                progressBar.setVisibility(View.GONE);
+                loading.setVisibility(View.GONE);
                 if (response.isSuccessful() && response.body() != null) {
                     allProducts = response.body().getProducts();
+                    searchView.setEnabled(true);
+                    tvNoResults.setVisibility(View.GONE);
+                    searchView.setVisibility(View.VISIBLE);
                 } else {
-                    // Handle the case where the response is not successful
-                    allProducts = new ArrayList<>();
+                    llNoInt.setVisibility(View.VISIBLE);
+                    searchView.setEnabled(false);
+                    tvNoResults.setVisibility(View.GONE);
+                    searchView.setVisibility(View.GONE);
                 }
             }
 
             @Override
             public void onFailure(Call<ProductResponse> call, Throwable t) {
-                progressBar.setVisibility(View.GONE);
-                // Handle failure to load data
-                allProducts = new ArrayList<>();
+                loading.setVisibility(View.GONE);
+                llNoInt.setVisibility(View.VISIBLE);
+                searchView.setEnabled(false);
+                tvNoResults.setVisibility(View.GONE);
+                searchView.setVisibility(View.GONE);
             }
         });
     }
@@ -108,6 +140,7 @@ public class SearchFragment extends Fragment {
         if (TextUtils.isEmpty(query)) {
             searchAdapter.updateList(new ArrayList<>());
             recyclerView.setVisibility(View.GONE);
+            tvNoResults.setVisibility(View.GONE);
         } else {
             List<Product> filteredList = new ArrayList<>();
             for (Product product : allProducts) {
@@ -117,6 +150,7 @@ public class SearchFragment extends Fragment {
             }
             searchAdapter.updateList(filteredList);
             recyclerView.setVisibility(filteredList.isEmpty() ? View.GONE : View.VISIBLE);
+            tvNoResults.setVisibility(filteredList.isEmpty() ? View.VISIBLE : View.GONE);
         }
     }
 }
