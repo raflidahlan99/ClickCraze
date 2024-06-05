@@ -1,4 +1,4 @@
-package com.example.clickcraze;
+package com.example.clickcraze.Activity;
 
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -15,6 +15,7 @@ import com.example.clickcraze.Fragment.CartFragment;
 import com.example.clickcraze.Fragment.HomeFragment;
 import com.example.clickcraze.Fragment.ProfileFragment;
 import com.example.clickcraze.Fragment.SearchFragment;
+import com.example.clickcraze.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 

@@ -9,7 +9,7 @@
     android:background="@drawable/bgfilo"
     android:orientation="vertical"
     android:fitsSystemWindows="true"
-    tools:context=".MainActivity">
+    tools:context=".Activity.MainActivity">
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"

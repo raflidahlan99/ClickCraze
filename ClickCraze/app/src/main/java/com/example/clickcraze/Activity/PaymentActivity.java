@@ -1,4 +1,4 @@
-package com.example.clickcraze;
+package com.example.clickcraze.Activity;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -10,23 +10,18 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.clickcraze.Adapter.CartAdapter;
 import com.example.clickcraze.Adapter.PaymentAdapter;
-import com.example.clickcraze.Fragment.CartFragment;
 import com.example.clickcraze.Model.Product;
+import com.example.clickcraze.R;
 
 import java.util.List;
 
-public class PaymentActivity extends AppCompatActivity {
+public class   PaymentActivity extends AppCompatActivity {
 
     private TextView totalPriceTextView;
     private RecyclerView rvPayment;

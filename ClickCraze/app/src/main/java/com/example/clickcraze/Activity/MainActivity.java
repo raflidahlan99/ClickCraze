@@ -1,4 +1,4 @@
-package com.example.clickcraze;
+package com.example.clickcraze.Activity;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -7,12 +7,9 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
+import com.example.clickcraze.R;
 import com.google.android.material.textfield.TextInputEditText;
 
 public class MainActivity extends AppCompatActivity {

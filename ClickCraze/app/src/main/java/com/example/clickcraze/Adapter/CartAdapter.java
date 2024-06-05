@@ -16,7 +16,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.example.clickcraze.DetailActivity;
+import com.example.clickcraze.Activity.DetailActivity;
 import com.example.clickcraze.Model.Product;
 import com.example.clickcraze.R;
 import com.google.gson.Gson;

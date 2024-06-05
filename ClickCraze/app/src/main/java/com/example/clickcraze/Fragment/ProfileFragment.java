@@ -18,7 +18,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.clickcraze.MainActivity;
+import com.example.clickcraze.Activity.MainActivity;
 import com.example.clickcraze.R;
 public class ProfileFragment extends Fragment {
 

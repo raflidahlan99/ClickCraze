@@ -20,7 +20,7 @@ import android.widget.TextView;
 
 import com.example.clickcraze.Adapter.CartAdapter;
 import com.example.clickcraze.Model.Product;
-import com.example.clickcraze.PaymentActivity;
+import com.example.clickcraze.Activity.PaymentActivity;
 import com.example.clickcraze.R;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
